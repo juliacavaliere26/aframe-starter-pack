@@ -1,15 +1,257 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"> </script>
+    <title>Where the Light Grows</title>
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
   </head>
+
   <body>
     <a-scene>
-      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
-      <a-sphere position="0 1.25 -5" radius="1.25" color="#EF2D5E"></a-sphere>
-      <a-cylinder position="1 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"></a-cylinder>
-      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
-      <a-sky color="#ECECEC"></a-sky>
-    </a-scene>
-  </body>
+
+      <!-- Enchanted 360-degree sky -->
+<a-sky
+  src="url(Images/meadow_sky.png)"
+  rotation="0 -90 0">
+</a-sky>
+
+    <!-- Meadow flowers -->
+<a-entity id="flowers"></a-entity>
+
+
+<script>
+  const flowerContainer = document.querySelector('#flowers');
+
+  for (let i = 0; i < 150; i++) {
+
+    // Spread flowers across the meadow
+    const x = (Math.random() - 0.5) * 35;
+    const z = (Math.random() - 0.5) * 35;
+
+    // Keep the center clear for exploring
+    if (Math.abs(x) < 2 && Math.abs(z) < 2) {
+      continue;
+    }
+
+    // Random size and rotation
+    const size = 2 + Math.random() * 2;
+    const rotation = Math.random() * 360;
+
+    // Create a flower model
+    const flower = document.createElement('a-entity');
+
+    flower.setAttribute(
+      'gltf-model',
+      'url(Models/flower.glb)'
+    );
+
+    flower.setAttribute('position', `${x} 0 ${z}`);
+    flower.setAttribute('rotation', `0 ${rotation} 0`);
+    flower.setAttribute('scale', `${size} ${size} ${size}`);
+
+    flowerContainer.appendChild(flower);
+  }
+</script>
+
+
+<!-- Trees surrounding the meadow -->
+<a-entity id="trees"></a-entity>
+
+<script>
+  const treeContainer = document.querySelector('#trees');
+
+  for (let i = 0; i < 16; i++) {
+
+    // Arrange trees in a circle
+    const angle = (i / 8) * Math.PI * 2;
+    const distance = 16 + Math.random() * 5;
+
+    const x = Math.cos(angle) * distance;
+    const z = Math.sin(angle) * distance;
+
+    // Slightly different sizes and rotations
+    const size = 0.8 + Math.random() * 0.4;
+    const rotation = Math.random() * 360;
+
+    const tree = document.createElement('a-entity');
+
+    tree.setAttribute(
+      'gltf-model',
+      'url(Models/tree/tree_small_02_4k.gltf)'
+    );
+
+    tree.setAttribute('position', `${x} 0 ${z}`);
+    tree.setAttribute('rotation', `0 ${rotation} 0`);
+    tree.setAttribute('scale', `${size} ${size} ${size}`);
+
+    treeContainer.appendChild(tree);
+  }
+</script>
+
+
+<!-- Tall flowers throughout the meadow -->
+<a-entity id="tallflowers"></a-entity>
+
+<script>
+  const tallFlowerContainer =
+    document.querySelector('#tallflowers');
+
+  for (let i = 0; i < 20; i++) {
+
+    const x = (Math.random() - 0.5) * 30;
+    const z = (Math.random() - 0.5) * 30;
+
+    // Leave the center open
+    if (Math.abs(x) < 3 && Math.abs(z) < 3) {
+      continue;
+    }
+
+    const size = 1 + Math.random() * 0.8;
+    const rotation = Math.random() * 360;
+
+    const flower = document.createElement('a-entity');
+
+    flower.setAttribute(
+      'gltf-model',
+      'url(Models/tallflower.glb)'
+    );
+
+    flower.setAttribute('position', `${x} 0 ${z}`);
+    flower.setAttribute('rotation', `0 ${rotation} 0`);
+    flower.setAttribute('scale', `${size} ${size} ${size}`);
+
+    tallFlowerContainer.appendChild(flower);
+  }
+</script>
+
+      <!-- Grass throughout the meadow -->
+      <a-entity id="grass"></a-entity>
+
+      <script>
+        const grassContainer = document.querySelector('#grass');
+
+        for (let i = 0; i < 300; i++) {
+
+    // Spread grass throughout the meadow
+    const x = (Math.random() - 0.5) * 40;
+    const z = (Math.random() - 0.5) * 40;
+
+    // Leave a small clearing in the center
+    if (Math.abs(x) < 2 && Math.abs(z) < 2) {
+      continue;
+    }
+
+    // Vary grass sizes and rotations
+    const size = 2 + Math.random() * 1.5;
+    const rotation = Math.random() * 360;
+
+    const grass = document.createElement('a-entity');
+
+    grass.setAttribute(
+      'gltf-model',
+      'url(Models/grass.glb)'
+    );
+
+    grass.setAttribute('position', `${x} 0 ${z}`);
+    grass.setAttribute('rotation', `0 ${rotation} 0`);
+    grass.setAttribute('scale', `${size} ${size} ${size}`);
+
+    grassContainer.appendChild(grass);
+  }
+
+  
+</script>
+
+      <!-- Meadow ground -->
+      <a-plane position="0 0 0" rotation="-90 0 0" width="100" height="100" color="#77966B"> </a-plane>
+
+      <!-- Soft ambient lighting -->
+      <a-light type="ambient" color="#FFF0DD" intensity="1.2"> </a-light>
+
+      <a-light type="directional" position="-3 8 -5" color="#FFE4B5" intensity="0.8"> </a-light>
+
+      <!-- Fireflies scattered throughout the meadow -->
+<a-entity id="fireflies"></a-entity>
+
+<script>
+  const fireflyContainer = document.querySelector('#fireflies');
+
+  for (let i = 0; i < 40; i++) {
+
+    // Random positions around the meadow
+    const x = (Math.random() - 0.5) * 24;
+    const y = 0.6 + Math.random() * 3;
+    const z = (Math.random() - 0.5) * 24;
+
+    // Create each floating firefly
+    const firefly = document.createElement('a-entity');
+    firefly.setAttribute('position', `${x} ${y} ${z}`);
+
+    // Small glowing center
+    const light = document.createElement('a-sphere');
+    light.setAttribute('radius', '0.035');
+    light.setAttribute(
+      'material',
+      'color: #FFF4A3; shader: flat'
+    );
+
+    // Transparent glow around it
+    const glow = document.createElement('a-sphere');
+    glow.setAttribute('radius', '0.14');
+    glow.setAttribute(
+      'material',
+      'color: #FFE98A; shader: flat; transparent: true; opacity: 0.12; depthWrite: false'
+    );
+
+    firefly.appendChild(light);
+    firefly.appendChild(glow);
+
+    // Gentle drifting movement
+    firefly.setAttribute('animation', {
+      property: 'position',
+      to: `${x + (Math.random() - 0.5) * 2}
+           ${y + 0.8}
+           ${z + (Math.random() - 0.5) * 2}`,
+      dur: 3000 + Math.random() * 4000,
+      dir: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine'
+    });
+
+        fireflyContainer.appendChild(firefly);
+  }
+</script>
+
+<!-- Winding forest pathway -->
+<a-entity id="forestPath"></a-entity>
+
+<script>
+  const pathContainer = document.querySelector('#forestPath');
+
+  // Create a gently winding trail into the distance
+  for (let i = 0; i < 55; i++) {
+
+    const z = -i * 0.65;
+    const x = Math.sin(i * 0.13) * 2.2;
+
+    const nextX = Math.sin((i + 1) * 0.13) * 2.2;
+    const angle = Math.atan2(nextX - x, -0.65) * 180 / Math.PI;
+
+    const pathPiece = document.createElement('a-plane');
+
+    pathPiece.setAttribute('position', `${x} 0.025 ${z}`);
+    pathPiece.setAttribute('rotation', `-90 0 ${angle}`);
+    pathPiece.setAttribute('width', 2.8);
+    pathPiece.setAttribute('height', 0.85);
+
+    pathPiece.setAttribute(
+      'material',
+      'color: #B49B80; roughness: 1; side: double'
+    );
+
+    pathContainer.appendChild(pathPiece);
+  }
+</script>
+
+</a-scene>
+</body>
 </html>
